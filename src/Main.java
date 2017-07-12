@@ -45,7 +45,7 @@ public class Main {
                     quit = true;
                     break;
                 case 1:
-                    if(!goingForward){
+                    if(!goingForward){// needed in order to play the next song only and to stop loops when song is removed
                         if(listIterator.hasNext()){
                             listIterator.next();
                         }
@@ -58,7 +58,7 @@ public class Main {
                     }
                     break;
                 case 2:
-                    if(goingForward){
+                    if(goingForward){// needed in order to play the previous song only and to stop loops when song is removed
                         if(listIterator.hasPrevious()){
                             listIterator.previous();
                         }
