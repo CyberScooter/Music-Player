@@ -7,41 +7,42 @@ import java.util.LinkedList;
 public class Album {
     private String name;
     private String artist;
-    private ArrayList<Song> album;
+    private songList song;
+    private LinkedList<Song> playlist;
 
     public Album(String name, String artist) {
         this.name = name;
         this.artist = artist;
-        this.album = new ArrayList<>();
-    }//adding name and artist to identify album
+        this.song = new songList();
+        this.playlist = new LinkedList<>();
+    }
 
     public boolean addSong(String title, double duration){
-        if(findSong(title) == null){
-            return album.add(new Song(title, duration));
-        }
-        return false;
+        return this.song.addSong(new Song(title, duration));
     }
 
-    public Song findSong(String title){
-        for(Song checkedSongs : this.album){
-            if(checkedSongs.getTitle().equals(title)){
-                return checkedSongs;
-            }
-        }
-        return null;
-    }
-
-    public boolean playAlbum(int trackNumber, LinkedList<Song> list){
-        int index = trackNumber -1;
-        if(index >= 0 && index <= this.album.size()){
-            list.add(this.album.get(index));
+    public boolean playSong(int trackNumber, LinkedList<Song> list) {
+        int index = trackNumber - 1;
+        if (index >= 0 && index <= this.song.getSongStorage().size()) {
+            list.add(this.song.getSongStorage().get(index));
             return true;
         }
         return false;
     }
-    public boolean playAlbum(String title, LinkedList<Song> List){
-        Song checkedSong = findSong(title);
-        if(checkedSong != null){
+
+    public void printList(LinkedList playlist){
+        if(this.playlist.size() > 0){
+            System.out.println("=================================================");
+            for(int x = 0; x < playlist.size(); x++){
+                System.out.println("Song: " + this.playlist.get(x).getTitle() + "   Duration: " + this.playlist.get(x).getDuration());
+            }
+            System.out.println("=================================================");
+        }
+    }
+
+    public boolean playSong(String title, LinkedList<Song> List) {
+        Song checkedSong = song.findSong(title);
+        if (checkedSong != null) {
             List.add(checkedSong);
             return true;
         }
@@ -49,6 +50,38 @@ public class Album {
 
     }
 
+    private class songList {
+        ArrayList<Song> songStorage;
+
+        public songList() {
+            this.songStorage = new ArrayList<>();
+        }
+
+        public boolean addSong(Song song) {
+            if (this.songStorage.contains(song)){
+                return false;
+            }
+            songStorage.add(song);
+            return true;
+        }
+
+        public Song findSong(String title) {
+            for (Song checkedSongs : this.songStorage) {
+                if (checkedSongs.getTitle().equals(title)) {
+                    return checkedSongs;
+                }
+            }
+            return null;
 
 
+        }
+
+        public void setSongStorage(ArrayList<Song> songStorage) {
+            this.songStorage = songStorage;
+        }
+
+        public ArrayList<Song> getSongStorage() {
+            return songStorage;
+        }
+    }
 }
